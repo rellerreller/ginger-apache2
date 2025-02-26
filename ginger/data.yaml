@@ -1,0 +1,15 @@
+disk:
+  type: 'raw'
+  path: '../target/disk_data.raw'
+  size_mib: 512
+dirs:
+- path: '/var/log/apache2'
+  uid: 10
+  permissions: 0o700
+  label: 'apache2_log'
+- path: '/var/run/apache2'
+  uid: 10
+  permissions: 0o700
+  label: 'apache2_run'
+files:
+

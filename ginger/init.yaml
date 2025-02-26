@@ -1,0 +1,34 @@
+networking:
+  source: dhcp
+commands:
+- executable: /sbin/auditctl
+  command_type: setup
+  current_dir: /
+  args:
+  - "-R"
+  - "/usr/etc/auditd/auditd.rules"
+  uid: 1
+  gid: 1
+- executable: /sbin/auditd
+  command_type: setup
+  current_dir: /
+  args:
+  - "-c"
+  - "/usr/etc/auditd"
+  uid: 1
+  gid: 1
+- executable: /sbin/measurerd
+  command_type: service
+  current_dir: /
+  args: []
+  uid: 2
+  gid: 2
+- executable: '/sbin/apache2'
+  command_type: target
+  current_dir: /
+  args:
+  - "-DFOREGROUND"
+  - "-d"
+  - "/usr/etc/apache2/"
+  uid: 10
+  gid: 10

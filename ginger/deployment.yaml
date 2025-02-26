@@ -1,0 +1,75 @@
+disk:
+  type: 'raw'
+  path: '../target/disk_deployment.raw'
+  size_mib: 512
+dirs:
+- path: '/usr/etc/apache2'
+  uid: 10
+  permissions: 0o700
+  label: 'apache2_etc'
+- path: '/usr/etc/apache2/conf-enabled'
+  uid: 10
+  permissions: 0o700
+  label: 'apache2_etc'
+- path: '/usr/etc/apache2/mods-enabled'
+  uid: 10
+  permissions: 0o700
+  label: 'apache2_etc'
+- path: '/usr/etc/apache2/sites-enabled'
+  uid: 10
+  permissions: 0o700
+  label: 'apache2_etc'
+- path: '/usr/www'
+  uid: 10
+  permissions: 0o700
+  label: 'apache2_www'
+- path: '/usr/www/html'
+  uid: 10
+  permissions: 0o700
+  label: 'apache2_www'
+files:
+- source: 'init.yaml'
+  destination: '/usr/etc/init.yaml'
+  uid: 0
+  permissions: 0o400
+  label: 'init_config'
+- source: 'auditd.conf'
+  destination: '/usr/etc/auditd/auditd.conf'
+  uid: 0
+  gid: 1
+  permissions: 0o440
+  label: 'auditd_config'
+- source: 'auditd.rules'
+  destination: '/usr/etc/auditd/auditd.rules'
+  uid: 1
+  permissions: 0o400
+  label: 'auditd_rules'
+
+# Copy apache2 configurations
+- source: './apache2/*'
+  destination: '/usr/etc/apache2/'
+  uid: 10
+  permissions: 0o400
+  label: 'apache2_config'
+- source: './apache2/conf-enabled/*'
+  destination: '/usr/etc/apache2/conf-enabled/'
+  uid: 10
+  permissions: 0o400
+  label: 'apache2_config'
+- source: './apache2/mods-enabled/*'
+  destination: '/usr/etc/apache2/mods-enabled/'
+  uid: 10
+  permissions: 0o400
+  label: 'apache2_config'
+- source: './apache2/sites-enabled/*'
+  destination: '/usr/etc/apache2/sites-enabled/'
+  uid: 10
+  permissions: 0o400
+  label: 'apache2_config'
+
+# Copy the web page
+- source: '../www/*'
+  destination: '/usr/www/html'
+  uid: 10
+  permissions: 0o400
+  label: 'apache2_www'
