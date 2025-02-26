@@ -1,6 +1,6 @@
 # Introduction
 
-This repository contains a Ginger OS configuration files for running an Apache2 web server. This is an example configuration based upon Ubuntu. The configuration files copy files as they are installed on an Ubuntu system. If running on a different operating system then check the file paths.
+This repository contains a Ginger OS configuration files for running an Apache2 web server. This is an example configuration based upon Ubuntu. The configuration files copy Apache2 files from the host Ubuntu system. If running on a different operating system then check the file paths.
 
 # Setup a Dev Environment
 
@@ -12,7 +12,7 @@ This section will guide you through the process of building a Ginger VM with Apa
 
 ## Install Apache2
 
-The Ginger OS configuration files copy files from the host system. This includes the apache2 binary and its modules.
+The Ginger OS configuration files copy files from the host system. This includes the apache2 binary and its modules. Therefore apache2 must be installed. Follow the instructions below to install apache2 and disable it.
 
 ```
 sudo apt install apache2
@@ -29,7 +29,7 @@ sudo rm /usr/lib/apache2/modules/httpd.exp
 
 ## Configure QEMU
 
-Run a configuration script that will establish a networking environment for the new virtual machine. The networking script will create a bridged network connection that uses Network Address Translation (NAT) to communicate via the Internet. The script is found in the hello-ginger-rust repo.
+Run a Bash networking script that will establish a networking environment for the new virtual machine. The networking script will create a bridged network connection that uses Network Address Translation (NAT) to allow the VM to communicate with the external network. The script is found in the hello-ginger-rust repo.
 
 ```
 git clone https://github.com/rellerreller/hello-ginger-rust
@@ -44,7 +44,8 @@ sudo bash -e setup.sh
 ## Build the Disk Images
 
 ### Clone the Repository
-Clone the ginger-apache2 repository and create a target directory within the repository directory to store the disk images. Execute the code below.
+
+Clone the ginger-apache2 repository, and from within the ginger-apache2 directory create a target directory to store the disk images. Execute the code below.
 
 ```
 git clone https://github.com/rellerreller/ginger-apache2
@@ -54,7 +55,7 @@ mkdir target
 
 ### Configure Networking
 
-The init.yaml file specifies the networking details for the virtual machine. A static networking configuration can be used. Modify the networking section in init.yaml to use the networking details below. **The DNS entry should be modified to match your environment.**
+The `ginger/init.yaml` file specifies the networking details for the virtual machine. A static networking configuration can be used. Modify the networking section in init.yaml to use the networking details below. **The DNS entry should be modified to match your environment.**
 
 ```
 networking:
@@ -68,11 +69,16 @@ networking:
     - 10.0.0.2
 ```
 
+### Update build.sh
+
+The `ginger/build.sh` script will automate building the disk images for the Ginger OS VM. The script requires a path to the gingervm binary that was installed. Edit the file and edit the variable `gingervm` to point to the gingervm binary.
+
 ### Build
 
 Change into the ginger directory and build the disk images. If the disk image files did not previously exist then they will be created and owned by root. After creating the disk images then change the owner and group for the files.
 
 ```
+cd ginger
 # You must login and have an active session for the build script to run.
 gingervm login
 # Only create a new image if one has not been created. This should only be run once.
@@ -90,7 +96,7 @@ cd ../ginger
 
 ## Run the Virtual Machine
 
-The final step is to run the virtual machine. From within the ginger directory run the command below. This will create a new Ginger OS virtual machine that runs the Apache2 web server.
+The final step is to run the virtual machine. From within the ginger directory run the command below. This will create a new Ginger OS virtual machine that runs the Apache2 web server. The web server will only be accessible via the host.
 
 ```
 bash launch.sh
