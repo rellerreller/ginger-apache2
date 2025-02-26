@@ -17,7 +17,7 @@ while getopts "o:i:s:v:" opt; do
   esac
 done
 
-if [ -z "$organization" ] || [ -z "$image" ] || [ -z "$server" || [ -z "$image_version" ]; then
+if [ -z "$organization" ] || [ -z "$image" ] || [ -z "$server" ] || [ -z "$image_version" ]; then
   usage
 fi
 
