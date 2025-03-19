@@ -29,6 +29,8 @@ files:
   uid: 10
   permissions: 0o500
   label: 'apache2_exec'
+  capabilities:
+  - cap_mmap_exec
 - source: 'passwd'
   destination: '/etc/passwd'
   uid: 10
